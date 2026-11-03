@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Offline Cyber Lab</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#050914;color:#00ff9c;font-family:monospace}
+header{padding:20px;background:#101b2c;border-bottom:1px solid #00ff9c}
+.container{max-width:950px;margin:auto;padding:18px}
+.panel{background:#0b1524;border:1px solid #175342;padding:18px;border-radius:9px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
+.card{background:#111f30;padding:16px;border-radius:7px}
+button{background:#00bd80;border:0;padding:12px 18px;font-weight:bold;cursor:pointer;margin:5px}
+button:disabled{opacity:.4}
+.bar{height:12px;background:#20303c;margin:15px 0}
+.progress{height:100%;width:0;background:#00ff9c;transition:width .4s}
+.terminal{height:270px;overflow:auto;background:#02060b;padding:14px;font-size:12px;line-height:1.8}
+.yellow{color:#ffcf55}
+.red{color:#ff5555}
+.green{color:#00ff9c}
+.status{color:#ffcf55}
+</style>
+</head>
+<body>
+<header>
+<h2>⚡ OFFLINE CYBER ATTACK LAB</h2>
+<div class="yellow">100% LOCAL • NO INTERNET CONNECTION</div>
+</header>
+<div class="container">
+<div class="panel">
+<h3>🎯 Target Environment</h3>
+<div class="card">FICTIONAL SOCIAL ACCOUNT — LOCAL DEMO</div>
+<br>
+<button id="start" onclick="startLab()">START DEMO</button>
+<div class="bar"><div class="progress" id="progress"></div></div>
+<div id="percent">Progress: 0%</div>
+</div>
+<div class="panel">
+<h3>📡 Security Modules</h3>
+<div class="grid">
+<div class="card">🔑 Password Analysis<br><span id="s1" class="status">Waiting</span></div>
+<div class="card">🍪 Session Simulation<br><span id="s2" class="status">Waiting</span></div>
+<div class="card">🌐 Network Monitor<br><span id="s3" class="status">Waiting</span></div>
+<div class="card">🎣 Phishing Detection<br><span id="s4" class="status">Waiting</span></div>
+<div class="card">🦠 Malware Scan<br><span id="s5" class="status">Waiting</span></div>
+<div class="card">🛡️ Security Report<br><span id="s6" class="status">Waiting</span></div>
+</div>
+</div>
+<div class="panel">
+<h3>💻 LIVE TERMINAL</h3>
+<div class="terminal" id="terminal">
+<div class="green">Offline Cyber Lab initialized...</div>
+<div class="yellow">Waiting for command...</div>
+</div>
+</div>
+<div class="panel" id="report">
+<h3>🚨 Security Report</h3>
+Waiting for simulation...
+</div>
+</div>
+<script>
+let running=false;
+let used=localStorage.getItem("offlineLabUsed")==="yes";
+const terminal=document.getElementById("terminal");
+function log(message,color="green"){
+ const line=document.createElement("div");
+ line.className=color;
+ line.textContent="["+new Date().toLocaleTimeString()+"] "+message;
+ terminal.appendChild(line);
+ terminal.scrollTop=terminal.scrollHeight;
+}
+const modules=[
+ ["Password Analysis","s1","Analyzing fictional password strength..."],
+ ["Session Simulation","s2","Simulating session protection..."],
+ ["Network Monitor","s3","Generating fictional network packets..."],
+ ["Phishing Detection","s4","Checking fictional login indicators..."],
+ ["Malware Scan","s5","Running local simulated malware scan..."],
+ ["Security Report","s6","Generating final report..."]
+];
+async function startLab(){
+ if(running || used)return;
+ used=true;
+ localStorage.setItem("offlineLabUsed","yes");
+ running=true;
+ document.getElementById("start").disabled=true;
+ terminal.innerHTML="";
+ log("OFFLINE CYBER LAB STARTED");
+ log("Internet Connection: DISABLED","yellow");
+ log("External Requests: NONE","yellow");
+ log("Target: FICTIONAL LOCAL ENVIRONMENT","yellow");
+ for(let i=0;i<modules.length;i++){
+  const [name,id,message]=modules[i];
+  log(message,"yellow");
+  await new Promise(r=>setTimeout(r,1800));
+  document.getElementById(id).textContent="✓ COMPLETED";
+  document.getElementById(id).className="green";
+  let p=Math.round((i+1)/modules.length*100);
+  document.getElementById("progress").style.width=p+"%";
+  document.getElementById("percent").textContent="Progress: "+p+"%";
+  log(name+" — Simulation completed.");
+ }
+ log("DEMONSTRATION FINISHED");
+ document.getElementById("report").innerHTML=`
+ <h3 class="green">✓ SIMULATION COMPLETED</h3>
+ <p>Password Analysis: Simulated</p>
+ <p>Session Security: Simulated</p>
+ <p>Network Monitoring: Local Only</p>
+ <p>Phishing Detection: Simulated</p>
+ <p>Malware Detection: Simulated</p>
+ <h3 class="yellow">No real account was accessed.</h3>
+ <p>One-time execution lock activated.</p>
+ `;
+ running=false;
+ document.getElementById("start").textContent="DEMO LOCKED";
+}
+if(used){
+ document.getElementById("start").disabled=true;
+ document.getElementById("start").textContent="ALREADY USED";
+}
+</script>
+</body>
+</html>
